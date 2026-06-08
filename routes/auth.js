@@ -15,6 +15,8 @@ const formatAdmin = (admin, token) => ({
 router.post('/register', async (req, res) => {
   const api = new ApiResponse(res);
   try {
+    const exists = await Admin.findOne({ email: req.body.email });
+    if (exists) return api.error({ message: 'Email already in use', statusCode: 409 });
     const admin = await Admin.create(req.body);
     return api.success({ data: formatAdmin(admin, signToken(admin._id)), message: 'Registered successfully', statusCode: 201 });
   } catch (err) {
