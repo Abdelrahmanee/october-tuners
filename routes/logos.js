@@ -1,27 +1,13 @@
 const router = require('express').Router();
-const path = require('path');
-const fs = require('fs');
 const sharp = require('sharp');
 const Logo = require('../models/Logo');
 const auth = require('../middleware/auth');
 const upload = require('../middleware/upload');
+const { uploadToCloudinary, deleteFromCloudinary } = require('../config/cloudinary');
 const ApiResponse = require('../utils/ApiResponse');
 const APIFeatures = require('../utils/APIFeatures');
 
 const LOGO_SIZE = 2000;
-const LOGOS_DIR = path.join(__dirname, '../uploads/logos');
-
-const saveFile = (buffer, originalname) => {
-  const ext = path.extname(originalname);
-  const filename = `${Date.now()}-${Math.round(Math.random() * 1e6)}${ext}`;
-  fs.writeFileSync(path.join(LOGOS_DIR, filename), buffer);
-  return `/uploads/logos/${filename}`;
-};
-
-const deleteFile = (url) => {
-  const filePath = path.join(__dirname, '..', url);
-  if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-};
 
 // GET /api/logos
 router.get('/', async (req, res) => {
@@ -47,7 +33,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/logos  — multipart: name (text) + logo (file)
+// POST /api/logos
 router.post('/', auth, upload.single('logo'), async (req, res) => {
   const api = new ApiResponse(res);
   try {
@@ -61,7 +47,7 @@ router.post('/', auth, upload.single('logo'), async (req, res) => {
         statusCode: 422,
       });
 
-    const url = saveFile(req.file.buffer, req.file.originalname);
+    const url = await uploadToCloudinary(req.file.buffer, 'october-tuners/logos');
     const logo = await Logo.create({ name: req.body.name, url });
     return api.success({ data: logo, message: 'Logo created', statusCode: 201 });
   } catch (err) {
@@ -69,7 +55,7 @@ router.post('/', auth, upload.single('logo'), async (req, res) => {
   }
 });
 
-// PUT /api/logos/:id — can update name and/or replace file
+// PUT /api/logos/:id
 router.put('/:id', auth, upload.single('logo'), async (req, res) => {
   const api = new ApiResponse(res);
   try {
@@ -83,13 +69,12 @@ router.put('/:id', auth, upload.single('logo'), async (req, res) => {
           message: `Logo must be exactly ${LOGO_SIZE}x${LOGO_SIZE}px. Got ${meta.width}x${meta.height}`,
           statusCode: 422,
         });
-      deleteFile(logo.url);
-      logo.url = saveFile(req.file.buffer, req.file.originalname);
+      await deleteFromCloudinary(logo.url);
+      logo.url = await uploadToCloudinary(req.file.buffer, 'october-tuners/logos');
     }
 
     if (req.body.name) logo.name = req.body.name;
     await logo.save();
-
     return api.success({ data: logo, message: 'Logo updated' });
   } catch (err) {
     return api.error({ message: err.message });
@@ -102,7 +87,7 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const logo = await Logo.findByIdAndDelete(req.params.id);
     if (!logo) return api.error({ message: 'Logo not found', statusCode: 404 });
-    deleteFile(logo.url);
+    await deleteFromCloudinary(logo.url);
     return api.success({ data: null, message: 'Logo deleted' });
   } catch (err) {
     return api.error({ message: err.message });

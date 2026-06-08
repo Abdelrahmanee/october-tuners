@@ -4,12 +4,9 @@ const connectDB = require('./config/db');
 const seed = require('./config/seed');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 connectDB().then(() => seed());
 app.use(express.json());
-
-app.use('/uploads', express.static('uploads'));
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/upload', require('./routes/upload'));
@@ -20,4 +17,10 @@ app.use('/api/journey/inspires', require('./routes/journey/inspires'));
 app.use('/api/journey/podcasts', require('./routes/journey/podcasts'));
 app.use('/api/journey/timeline', require('./routes/journey/timeline'));
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// local dev only
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+}
+
+module.exports = app;
