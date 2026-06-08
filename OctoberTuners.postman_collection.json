@@ -1,0 +1,567 @@
+{
+  "info": {
+    "name": "October Tuners API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) pm.collectionVariables.set('token', res.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"123456\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Upload",
+      "item": [
+        {
+          "name": "Upload Files (logos and/or photos)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/upload",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "logos",
+                  "type": "file",
+                  "src": "",
+                  "description": "Optional. Must be exactly 2000x2000px. Allowed: jpeg, png, webp. Max 10MB each. Up to 20 files."
+                },
+                {
+                  "key": "logos",
+                  "type": "file",
+                  "src": "",
+                  "description": "Add more logo files here",
+                  "disabled": true
+                },
+                {
+                  "key": "photos",
+                  "type": "file",
+                  "src": "",
+                  "description": "Optional. No dimension restriction. Allowed: jpeg, png, webp. Max 10MB each. Up to 50 files."
+                },
+                {
+                  "key": "photos",
+                  "type": "file",
+                  "src": "",
+                  "description": "Add more photo files here",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Logos",
+      "item": [
+        {
+          "name": "Get All Logos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/logos?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["logos"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "sort", "value": "-createdAt", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Logo By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/logos/:id",
+              "host": ["{{base_url}}"],
+              "path": ["logos", ":id"],
+              "variable": [{ "key": "id", "value": "<logo_id>" }]
+            }
+          }
+        },
+        {
+          "name": "Create Logo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/logos",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Sponsor One", "type": "text" },
+                { "key": "logo", "type": "file", "src": "", "description": "Must be exactly 2000x2000px. jpeg/png/webp. Max 10MB." }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Logo",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/logos/:id",
+              "host": ["{{base_url}}"],
+              "path": ["logos", ":id"],
+              "variable": [{ "key": "id", "value": "<logo_id>" }]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Updated Sponsor Name", "type": "text", "disabled": true },
+                { "key": "logo", "type": "file", "src": "", "description": "Optional. Replaces existing file.", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Logo",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/logos/:id",
+              "host": ["{{base_url}}"],
+              "path": ["logos", ":id"],
+              "variable": [{ "key": "id", "value": "<logo_id>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Journey - Events",
+      "item": [
+        {
+          "name": "Get All Events",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/events?lang=en&page=1&limit=10&sort=-date",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "events"],
+              "query": [
+                { "key": "lang", "value": "en", "description": "Language: en or ar" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "sort", "value": "-date", "description": "Sort by field. Use - for descending" },
+                { "key": "category", "value": "", "description": "Filter by category", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Event By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/events/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "events", ":id"],
+              "variable": [{ "key": "id", "value": "<event_id>" }]
+            }
+          }
+        },
+        {
+          "name": "Create Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/journey/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Summer Events\",\n  \"destination_en\": \"Cairo\",\n  \"destination_ar\": \"القاهرة\",\n  \"date\": \"2024-07-15\",\n  \"title_en\": \"Summer Drift 2024\",\n  \"title_ar\": \"سمر درفت 2024\",\n  \"carsJoined\": 120,\n  \"exhibitors\": 15,\n  \"sponsors\": [\n    { \"logo\": \"https://example.com/logo.png\", \"name\": \"Sponsor One\" }\n  ],\n  \"sponsorsDisplayStyle\": \"marquee\",\n  \"youtubeMain\": \"https://youtube.com/watch?v=example\",\n  \"reels\": [\"https://youtube.com/shorts/example\"],\n  \"gallery\": [\"https://example.com/img1.jpg\"],\n  \"theme_en\": \"Neon Nights\",\n  \"theme_ar\": \"ليالي النيون\",\n  \"colorPalette\": [\"#FF6B00\", \"#1A1A2E\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Event",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/journey/events/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "events", ":id"],
+              "variable": [{ "key": "id", "value": "<event_id>" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title_en\": \"Summer Drift 2024 Updated\",\n  \"title_ar\": \"سمر درفت 2024 محدث\",\n  \"carsJoined\": 150\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Event",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/events/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "events", ":id"],
+              "variable": [{ "key": "id", "value": "<event_id>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Journey - Rides",
+      "item": [
+        {
+          "name": "Get All Rides",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/rides?lang=en&page=1&limit=10&sort=-date",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "rides"],
+              "query": [
+                { "key": "lang", "value": "en", "description": "Language: en or ar" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "sort", "value": "-date" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Ride By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/rides/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "rides", ":id"],
+              "variable": [{ "key": "id", "value": "<ride_id>" }]
+            }
+          }
+        },
+        {
+          "name": "Create Ride",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/journey/rides",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination_en\": \"Alexandria\",\n  \"destination_ar\": \"الإسكندرية\",\n  \"date\": \"2024-08-20\",\n  \"title_en\": \"Coastal Cruise 2024\",\n  \"title_ar\": \"كروز الساحل 2024\",\n  \"carsJoined\": 80,\n  \"exhibitors\": 5,\n  \"sponsors\": [\n    { \"logo\": \"https://example.com/logo.png\", \"name\": \"Sponsor One\" }\n  ],\n  \"sponsorsDisplayStyle\": \"carousel\",\n  \"youtubeMain\": \"https://youtube.com/watch?v=example\",\n  \"reels\": [\"https://youtube.com/shorts/example\"],\n  \"gallery\": [\"https://example.com/img1.jpg\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Ride",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/journey/rides/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "rides", ":id"],
+              "variable": [{ "key": "id", "value": "<ride_id>" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title_en\": \"Coastal Cruise 2024 Updated\",\n  \"title_ar\": \"كروز الساحل 2024 محدث\",\n  \"carsJoined\": 100\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Ride",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/rides/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "rides", ":id"],
+              "variable": [{ "key": "id", "value": "<ride_id>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Journey - Inspires",
+      "item": [
+        {
+          "name": "Get All Inspires",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/inspires?lang=ar&page=1&limit=10&sort=-date",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "inspires"],
+              "query": [
+                { "key": "lang", "value": "ar", "description": "Language: en or ar" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "sort", "value": "-date" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Inspire By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/inspires/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "inspires", ":id"],
+              "variable": [{ "key": "id", "value": "<inspire_id>" }]
+            }
+          }
+        },
+        {
+          "name": "Create Inspire",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/journey/inspires",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2024-09-10\",\n  \"title_en\": \"Inspire Vol. 3\",\n  \"title_ar\": \"إنسباير الجزء الثالث\",\n  \"carsJoined\": 60,\n  \"exhibitors\": 8,\n  \"sponsors\": [\n    { \"logo\": \"https://example.com/logo.png\", \"name\": \"Sponsor One\" }\n  ],\n  \"sponsorsDisplayStyle\": \"marquee\",\n  \"youtubeMain\": \"https://youtube.com/watch?v=example\",\n  \"reels\": [\"https://youtube.com/shorts/example\"],\n  \"gallery\": [\"https://example.com/img1.jpg\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Inspire",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/journey/inspires/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "inspires", ":id"],
+              "variable": [{ "key": "id", "value": "<inspire_id>" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title_en\": \"Inspire Vol. 3 Updated\",\n  \"title_ar\": \"إنسباير الجزء الثالث محدث\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Inspire",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/inspires/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "inspires", ":id"],
+              "variable": [{ "key": "id", "value": "<inspire_id>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Journey - Podcasts",
+      "item": [
+        {
+          "name": "Get All Podcasts",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/podcasts?lang=en&page=1&limit=10&sort=-date",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "podcasts"],
+              "query": [
+                { "key": "lang", "value": "en", "description": "Language: en or ar" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "sort", "value": "-date" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Podcast By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/podcasts/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "podcasts", ":id"],
+              "variable": [{ "key": "id", "value": "<podcast_id>" }]
+            }
+          }
+        },
+        {
+          "name": "Create Podcast",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{base_url}}/journey/podcasts",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title_en\": \"OT Podcast Episode 1\",\n  \"title_ar\": \"بودكاست أوكتوبر تيونرز الحلقة الأولى\",\n  \"youtubeUrl\": \"https://youtube.com/watch?v=example\",\n  \"date\": \"2024-10-01\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Podcast",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/journey/podcasts/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "podcasts", ":id"],
+              "variable": [{ "key": "id", "value": "<podcast_id>" }]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title_en\": \"OT Podcast Episode 1 Updated\",\n  \"title_ar\": \"بودكاست أوكتوبر تيونرز الحلقة الأولى محدث\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Podcast",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/podcasts/:id",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "podcasts", ":id"],
+              "variable": [{ "key": "id", "value": "<podcast_id>" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Journey - Timeline",
+      "item": [
+        {
+          "name": "Get Available Years",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/timeline/years",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "timeline", "years"]
+            }
+          }
+        },
+        {
+          "name": "Get Timeline By Year (All Types)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/timeline?year=2024&lang=en",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "timeline"],
+              "query": [
+                { "key": "year", "value": "2024", "description": "Required. Filter by year" },
+                { "key": "lang", "value": "en", "description": "Optional. en or ar" },
+                { "key": "type", "value": "", "description": "Optional. events | rides | inspires | podcasts", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Timeline By Year (Single Type)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/journey/timeline?year=2024&lang=en&type=events",
+              "host": ["{{base_url}}"],
+              "path": ["journey", "timeline"],
+              "query": [
+                { "key": "year", "value": "2024", "description": "Required. Filter by year" },
+                { "key": "lang", "value": "en", "description": "Optional. en or ar" },
+                { "key": "type", "value": "events", "description": "events | rides | inspires | podcasts" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
