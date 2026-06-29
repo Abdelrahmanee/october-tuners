@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
   year: { type: Number, index: true },
-  category: { type: String, required: true },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   destination_en: { type: String, required: true },
   destination_ar: { type: String, required: true },
   date: { type: Date, required: true },
