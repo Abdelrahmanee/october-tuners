@@ -1,19 +1,21 @@
-const Admin = require('../models/Admin');
+const User = require('../models/User');
 const Event = require('../models/Event');
 const Ride = require('../models/Ride');
 const Inspire = require('../models/Inspire');
 const Podcast = require('../models/Podcast');
 const Logo = require('../models/Logo');
+const { ROLES } = require('../constants/roles');
 
 const seed = async () => {
   try {
     // Admin — only seed if no admin exists
-    const adminExists = await Admin.findOne({ email: 'admin@octobertuners.com' });
+    const adminExists = await User.findOne({ email: 'admin@octobertuners.com' });
     if (!adminExists) {
-      await Admin.create({
+      await User.create({
         name: 'Super Admin',
         email: 'admin@octobertuners.com',
         password: 'Admin@123',
+        role: ROLES.ADMIN
       });
       console.log('✔ Admin seeded');
     }

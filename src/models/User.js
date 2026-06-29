@@ -1,19 +1,21 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { ROLES, ALL_ROLES } = require('../constants/roles');
 
-const adminSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-}, { timestamps: true });
+  role: { type: String, enum: ALL_ROLES, default: ROLES.MEMBER },
+}, { timestamps: true, collection: 'users' });
 
-adminSchema.pre('save', async function () {
+userSchema.pre('save', async function () {
   if (this.isModified('password'))
     this.password = await bcrypt.hash(this.password, 10);
 });
 
-adminSchema.methods.matchPassword = function (password) {
+userSchema.methods.matchPassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-module.exports = mongoose.model('Admin', adminSchema);
+module.exports = mongoose.model('User', userSchema);

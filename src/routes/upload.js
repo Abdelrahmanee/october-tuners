@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const sharp = require('sharp');
 const auth = require('../middleware/auth');
+const requireRole = require('../middleware/requireRole');
+const { ROLES } = require('../constants/roles');
 const upload = require('../middleware/upload');
 const { uploadToCloudinary } = require('../config/cloudinary');
 const ApiResponse = require('../utils/ApiResponse');
@@ -10,6 +12,7 @@ const LOGO_SIZE = 2000;
 router.post(
   '/',
   auth,
+  requireRole(ROLES.ADMIN),
   upload.fields([
     { name: 'logos', maxCount: 20 },
     { name: 'photos', maxCount: 50 },

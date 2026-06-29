@@ -2,6 +2,8 @@ const router = require('express').Router();
 const Event = require('../../models/Event');
 const Category = require('../../models/Category');
 const auth = require('../../middleware/auth');
+const requireRole = require('../../middleware/requireRole');
+const { ROLES } = require('../../constants/roles');
 const APIFeatures = require('../../utils/APIFeatures');
 const ApiResponse = require('../../utils/ApiResponse');
 
@@ -36,7 +38,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, requireRole(ROLES.ADMIN), async (req, res) => {
   const api = new ApiResponse(res);
   try {
     if (req.body.category) {
@@ -50,7 +52,7 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, requireRole(ROLES.ADMIN), async (req, res) => {
   const api = new ApiResponse(res);
   try {
     if (req.body.category) {
@@ -65,7 +67,7 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, requireRole(ROLES.ADMIN), async (req, res) => {
   const api = new ApiResponse(res);
   try {
     const event = await Event.findByIdAndDelete(req.params.id);
