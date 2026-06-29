@@ -28,6 +28,7 @@ app.use(async (req, res, next) => {
 app.use(express.json());
 app.get('/', (req, res) => res.send('API is running...'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/logos', require('./routes/logos'));
 app.use('/api/journey/events', require('./routes/journey/events'));

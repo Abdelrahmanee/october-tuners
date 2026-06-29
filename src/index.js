@@ -31,7 +31,6 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/logos', require('./routes/logos'));
 app.use('/api/journey/events', require('./routes/journey/events'));
-app.use('/api/journey/categories', require('./routes/journey/categories'));
 app.use('/api/journey/rides', require('./routes/journey/rides'));
 app.use('/api/journey/inspires', require('./routes/journey/inspires'));
 app.use('/api/journey/podcasts', require('./routes/journey/podcasts'));
