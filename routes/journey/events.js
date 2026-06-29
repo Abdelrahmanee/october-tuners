@@ -1,13 +1,16 @@
 const router = require('express').Router();
 const Event = require('../../models/Event');
+const Category = require('../../models/Category');
 const auth = require('../../middleware/auth');
+const requireRole = require('../../middleware/requireRole');
+const { ROLES } = require('../../constants/roles');
 const APIFeatures = require('../../utils/APIFeatures');
 const ApiResponse = require('../../utils/ApiResponse');
 
 router.get('/', async (req, res) => {
   const api = new ApiResponse(res);
   try {
-    const features = new APIFeatures(Event.find(), req.query)
+    const features = new APIFeatures(Event.find().populate('category'), req.query)
       .filter()
       .sort()
       .paginate()
@@ -27,7 +30,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const api = new ApiResponse(res);
   try {
-    const event = await Event.findById(req.params.id);
+    const event = await Event.findById(req.params.id).populate('category');
     if (!event) return api.error({ message: 'Event not found', statusCode: 404 });
     return api.success({ data: event });
   } catch (err) {
@@ -35,9 +38,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, requireRole(ROLES.ADMIN), async (req, res) => {
   const api = new ApiResponse(res);
   try {
+    if (req.body.category) {
+      const categoryExists = await Category.findById(req.body.category);
+      if (!categoryExists) return api.error({ message: 'Invalid category: Category does not exist', statusCode: 400 });
+    }
     const event = await Event.create(req.body);
     return api.success({ data: event, message: 'Event created', statusCode: 201 });
   } catch (err) {
@@ -45,9 +52,13 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, requireRole(ROLES.ADMIN), async (req, res) => {
   const api = new ApiResponse(res);
   try {
+    if (req.body.category) {
+      const categoryExists = await Category.findById(req.body.category);
+      if (!categoryExists) return api.error({ message: 'Invalid category: Category does not exist', statusCode: 400 });
+    }
     const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!event) return api.error({ message: 'Event not found', statusCode: 404 });
     return api.success({ data: event, message: 'Event updated' });
@@ -56,7 +67,7 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, requireRole(ROLES.ADMIN), async (req, res) => {
   const api = new ApiResponse(res);
   try {
     const event = await Event.findByIdAndDelete(req.params.id);

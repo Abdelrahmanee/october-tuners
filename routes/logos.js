@@ -2,6 +2,8 @@ const router = require('express').Router();
 const sharp = require('sharp');
 const Logo = require('../models/Logo');
 const auth = require('../middleware/auth');
+const requireRole = require('../middleware/requireRole');
+const { ROLES } = require('../constants/roles');
 const upload = require('../middleware/upload');
 const { uploadToCloudinary, deleteFromCloudinary } = require('../config/cloudinary');
 const ApiResponse = require('../utils/ApiResponse');
@@ -34,7 +36,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/logos
-router.post('/', auth, upload.single('logo'), async (req, res) => {
+router.post('/', auth, requireRole(ROLES.ADMIN), upload.single('logo'), async (req, res) => {
   const api = new ApiResponse(res);
   try {
     if (!req.file) return api.error({ message: 'Logo file is required', statusCode: 400 });
@@ -56,7 +58,7 @@ router.post('/', auth, upload.single('logo'), async (req, res) => {
 });
 
 // PUT /api/logos/:id
-router.put('/:id', auth, upload.single('logo'), async (req, res) => {
+router.put('/:id', auth, requireRole(ROLES.ADMIN), upload.single('logo'), async (req, res) => {
   const api = new ApiResponse(res);
   try {
     const logo = await Logo.findById(req.params.id);
@@ -82,7 +84,7 @@ router.put('/:id', auth, upload.single('logo'), async (req, res) => {
 });
 
 // DELETE /api/logos/:id
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, requireRole(ROLES.ADMIN), async (req, res) => {
   const api = new ApiResponse(res);
   try {
     const logo = await Logo.findByIdAndDelete(req.params.id);
