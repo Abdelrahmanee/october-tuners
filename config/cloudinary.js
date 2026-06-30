@@ -22,10 +22,17 @@ const uploadToCloudinary = (buffer, folder) => {
 const deleteFromCloudinary = async (url) => {
   try {
     // extract public_id from url: .../folder/filename.ext → folder/filename
-    const parts = url.split('/');
-    const filename = parts[parts.length - 1].split('.')[0];
-    const folder = parts[parts.length - 2];
-    await cloudinary.uploader.destroy(`${folder}/${filename}`);
+    const parts = new URL(url).pathname.split('/').filter(Boolean);
+    const uploadIndex = parts.indexOf('upload');
+    if (uploadIndex === -1) return;
+
+    const assetParts = parts.slice(uploadIndex + 1);
+    if (/^v\d+$/.test(assetParts[0])) assetParts.shift();
+    if (!assetParts.length) return;
+
+    const last = assetParts.length - 1;
+    assetParts[last] = assetParts[last].replace(/\.[^.]+$/, '');
+    await cloudinary.uploader.destroy(decodeURIComponent(assetParts.join('/')));
   } catch {
     // non-blocking
   }

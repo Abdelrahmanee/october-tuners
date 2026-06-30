@@ -259,6 +259,312 @@
       ]
     },
     {
+      "name": "About Us",
+      "item": [
+        {
+          "name": "Get About Us Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/about-us"
+          }
+        },
+        {
+          "name": "Create About Us Content (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{base_url}}/about-us",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pageTitle\": \"About Us\",\n  \"overview\": \"Learn about October Tuners, our history, mission, team, and partners.\",\n  \"history\": {\n    \"title\": \"History\",\n    \"description\": \"A brief overview of the company's journey, milestones, and achievements over the years.\"\n  },\n  \"companyIntroduction\": {\n    \"title\": \"Company Introduction\",\n    \"mission\": \"Clearly state the company's mission.\",\n    \"vision\": \"Clearly state the company's vision.\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Update About Us Content (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{base_url}}/about-us",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"overview\": \"Updated About Us overview.\",\n  \"history\": {\n    \"title\": \"Our History\",\n    \"description\": \"Updated history and milestones.\"\n  },\n  \"companyIntroduction\": {\n    \"title\": \"Company Introduction\",\n    \"mission\": \"Our updated mission.\",\n    \"vision\": \"Our updated vision.\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete About Us Content (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{base_url}}/about-us"
+          }
+        },
+        {
+          "name": "Get Team Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/about-us/team"
+          }
+        },
+        {
+          "name": "Get Team Member By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/about-us/team/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "about-us",
+                "team",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<team_member_id>"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Team Member (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{base_url}}/about-us/team",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Team Member Name\",\n  \"email\": \"member@example.com\",\n  \"image\": \"https://res.cloudinary.com/example/image/upload/team-member.jpg\",\n  \"order\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Team Member (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/about-us/team/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "about-us",
+                "team",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<team_member_id>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Team Member\",\n  \"email\": \"updated@example.com\",\n  \"image\": \"https://res.cloudinary.com/example/image/upload/updated-team-member.jpg\",\n  \"order\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Team Member (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/about-us/team/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "about-us",
+                "team",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<team_member_id>"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Partners",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/about-us/partners"
+          }
+        },
+        {
+          "name": "Get Partner By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/about-us/partners/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "about-us",
+                "partners",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<partner_id>"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Partner (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{base_url}}/about-us/partners",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Partner Company\",\n  \"logo\": \"https://res.cloudinary.com/example/image/upload/partner-logo.png\",\n  \"order\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Partner (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/about-us/partners/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "about-us",
+                "partners",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<partner_id>"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Partner Company\",\n  \"logo\": \"https://res.cloudinary.com/example/image/upload/updated-partner-logo.png\",\n  \"order\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Partner (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/about-us/partners/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "about-us",
+                "partners",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<partner_id>"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Upload",
       "item": [
         {
