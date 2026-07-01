@@ -121,6 +121,8 @@ router.post('/team', ...adminOnly, async (req, res) => {
     const member = await TeamMember.create({
       name: req.body.name,
       email: req.body.email,
+      job_title_en: req.body.job_title_en,
+      job_title_ar: req.body.job_title_ar,
       image: req.body.image,
       ...(order !== undefined && { order }),
     });
@@ -146,6 +148,8 @@ router.put('/team/:id', ...adminOnly, async (req, res) => {
     if (req.body.image !== undefined) member.image = req.body.image;
     if (req.body.name !== undefined) member.name = req.body.name;
     if (req.body.email !== undefined) member.email = req.body.email;
+    if (req.body.job_title_en !== undefined) member.job_title_en = req.body.job_title_en;
+    if (req.body.job_title_ar !== undefined) member.job_title_ar = req.body.job_title_ar;
     if (order !== undefined) member.order = order;
 
     await member.save();

@@ -286,7 +286,7 @@
             "url": "{{base_url}}/about-us",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pageTitle\": \"About Us\",\n  \"overview\": \"Learn about October Tuners, our history, mission, team, and partners.\",\n  \"history\": {\n    \"title\": \"History\",\n    \"description\": \"A brief overview of the company's journey, milestones, and achievements over the years.\"\n  },\n  \"companyIntroduction\": {\n    \"title\": \"Company Introduction\",\n    \"mission\": \"Clearly state the company's mission.\",\n    \"vision\": \"Clearly state the company's vision.\"\n  }\n}"
+              "raw": "{\n  \"pageTitle_en\": \"About Us\",\n  \"pageTitle_ar\": \"من نحن\",\n  \"overview_en\": \"Learn about October Tuners, our history, mission, team, and partners.\",\n  \"overview_ar\": \"تعرف على أكتوبر تونرز وتاريخنا ورسالتنا وفريقنا وشركائنا.\",\n  \"history\": {\n    \"title_en\": \"History\",\n    \"title_ar\": \"تاريخنا\",\n    \"description_en\": \"A brief overview of the company's journey, milestones, and achievements over the years.\",\n    \"description_ar\": \"نبذة عن رحلة الشركة ومحطاتها وإنجازاتها على مر السنين.\"\n  },\n  \"companyIntroduction\": {\n    \"title_en\": \"Company Introduction\",\n    \"title_ar\": \"نبذة عن الشركة\",\n    \"mission_en\": \"Clearly state the company's mission.\",\n    \"mission_ar\": \"توضيح رسالة الشركة.\",\n    \"vision_en\": \"Clearly state the company's vision.\",\n    \"vision_ar\": \"توضيح رؤية الشركة.\"\n  }\n}"
             }
           }
         },
@@ -307,7 +307,7 @@
             "url": "{{base_url}}/about-us",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"overview\": \"Updated About Us overview.\",\n  \"history\": {\n    \"title\": \"Our History\",\n    \"description\": \"Updated history and milestones.\"\n  },\n  \"companyIntroduction\": {\n    \"title\": \"Company Introduction\",\n    \"mission\": \"Our updated mission.\",\n    \"vision\": \"Our updated vision.\"\n  }\n}"
+              "raw": "{\n  \"pageTitle_en\": \"About Us\",\n  \"pageTitle_ar\": \"من نحن\",\n  \"overview_en\": \"Updated About Us overview.\",\n  \"overview_ar\": \"نبذة محدثة عن الشركة.\",\n  \"history\": {\n    \"title_en\": \"Our History\",\n    \"title_ar\": \"تاريخنا\",\n    \"description_en\": \"Updated history and milestones.\",\n    \"description_ar\": \"تاريخ ومحطات محدثة.\"\n  },\n  \"companyIntroduction\": {\n    \"title_en\": \"Company Introduction\",\n    \"title_ar\": \"نبذة عن الشركة\",\n    \"mission_en\": \"Our updated mission.\",\n    \"mission_ar\": \"رسالتنا المحدثة.\",\n    \"vision_en\": \"Our updated vision.\",\n    \"vision_ar\": \"رؤيتنا المحدثة.\"\n  }\n}"
             }
           }
         },
@@ -373,7 +373,7 @@
             "url": "{{base_url}}/about-us/team",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Team Member Name\",\n  \"email\": \"member@example.com\",\n  \"image\": \"https://res.cloudinary.com/example/image/upload/team-member.jpg\",\n  \"order\": 1\n}"
+              "raw": "{\n  \"name\": \"Team Member Name\",\n  \"email\": \"member@example.com\",\n  \"job_title_en\": \"Marketing Manager\",\n  \"job_title_ar\": \"مدير التسويق\",\n  \"image\": \"https://res.cloudinary.com/example/image/upload/team-member.jpg\",\n  \"order\": 1\n}"
             }
           }
         },
@@ -410,7 +410,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Team Member\",\n  \"email\": \"updated@example.com\",\n  \"image\": \"https://res.cloudinary.com/example/image/upload/updated-team-member.jpg\",\n  \"order\": 2\n}"
+              "raw": "{\n  \"name\": \"Updated Team Member\",\n  \"email\": \"updated@example.com\",\n  \"job_title_en\": \"Senior Marketing Manager\",\n  \"job_title_ar\": \"مدير تسويق أول\",\n  \"image\": \"https://res.cloudinary.com/example/image/upload/updated-team-member.jpg\",\n  \"order\": 2\n}"
             }
           }
         },
